@@ -1,0 +1,130 @@
+/* navbar */
+.navbar {
+    transition: 1s;
+}
+
+.tinggi-card {
+    margin-top: 120px;
+    margin-bottom: 120px;
+}
+
+.bg-green {
+    background-color: #7cc992;
+}
+
+.scrolled {
+    background-color: #023347 !important;
+    opacity: 0.9;
+    transition: 0.8s;
+}
+
+.navbar-brand {
+    font-family: 'viga', sans-serif;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    font-size: 32px;
+    color: #fff !important;
+}
+
+
+.navbar-nav,
+.nav-item,
+.nav-link {
+    color: #fff !important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    text-transform: uppercase;
+    margin-right: 30px;
+}
+
+/* jumbotron */
+
+.jumbotron {
+    background-image: url(../img/jumbotron-bg.jpg);
+    background-size: cover;
+    height: 640px;
+    text-align: center;
+    position: relative;
+    background-position: 0px -30px;
+}
+
+.jumbotron .display-4 {
+    color: white;
+    font-weight: 200;
+    margin-top: 150px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+.jumbotron .display-4 span {
+    font-weight: 500;
+}
+
+.jumbotron .container {
+    z-index: 1;
+    position: relative;
+}
+
+.jumbotron::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    position: absolute;
+    bottom: 0;
+
+}
+
+/* Utility */
+
+.tombol {
+    text-transform: uppercase;
+    border-radius: 40px;
+}
+
+section {
+    min-height: 900px;
+}
+
+
+
+@media (min-width: 992px) {
+
+    .navbar-brand,
+    .nav-link {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7)
+    }
+
+    .navbar-nav .nav-link {
+        text-transform: uppercase;
+        margin-right: 30px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+        content: '';
+        display: block;
+        border-bottom: 3px solid salmon;
+        width: 50%;
+        margin: auto;
+        padding-bottom: 5px;
+        margin-bottom: -8px;
+    }
+
+    .active::after {
+        content: '';
+        display: block;
+        border-bottom: 3px solid lightskyblue;
+        width: 50%;
+        margin: auto;
+        padding-bottom: 5px;
+        margin-bottom: -8px;
+    }
+
+    .jumbotron {
+        height: 640px;
+    }
+
+    .jumbotron .display-4 {
+        font-size: 62px;
+    }
+}
