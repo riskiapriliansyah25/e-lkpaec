@@ -9,8 +9,8 @@ class Detailsoal extends Model
     protected $table = 'detailsoal';
     protected $guarded = [''];
 
-    public function Materi()
-    {
-        return $this->hasOne(Materi::class);
-    }
+    public function checkJawab()
+	{
+		return $this->belongsTo('App\Jawab', 'id', 'no_soal_id')->where('id_user', auth()->user()->id);
+	}
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Materi;
+use App\Coba;
 use App\Buku;
+use App\Distribusimateri;
 use App\User;
 use App\Auth;
 use Storage;
@@ -11,37 +13,24 @@ use Illuminate\Http\Request;
 
 class MateriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $list_materi = Materi::all();
+        if(auth()->user()->role == 'admin'){
+            $list_materi = Materi::all();
+        }else{
+            $list_materi = Materi::where('user_id', '=', auth()->user()->id)->get();
+        }
         $list_buku = Buku::all();
         return view('materi.index', compact('list_materi', 'list_buku'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {  
-          
         $request->validate([
             'judul' => 'required',
             'buku_id' => 'required',
@@ -67,47 +56,54 @@ class MateriController extends Controller
         Materi::create($input);
         return redirect('materii')->with('sukses', 'Data telah ditambah');
     }
+    public function storeDistribusiMateri(Request $request)
+    {
+        $distribusi = new Distribusimateri;
+        $distribusi->materi_id = $request->materiId;
+        $distribusi->kelas_id = $request->kelasId;
+        $distribusi->user_id = auth()->user()->id;
+        $check = Distribusimateri::where('materi_id', $request->materiId)->where('kelas_id', $request->kelasId)->first();
+        if($check){
+            return 0;
+        }else{
+            $distribusi->save();
+        }
+    }
+    public function deleteDistribusiMateri(Request $request)
+    {
+        $id = $request->distId;
+        Distribusimateri::destroy($id);
+    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
     public function show(Materi $materi)
     {
-        return view('materi.show', compact('materi'));
+        if(auth()->user()->role == 'instruktur'){
+            $list_kelas = Coba::where('instruktur_id', auth()->user()->instruktur->id)->get();
+            $list_distribusi = Distribusimateri::where('user_id', auth()->user()->id)->get();
+        }else{
+            $list_kelas = Coba::all();
+            $list_distribusi = Distribusimateri::all();
+        }
+        return view('materi.show', compact('materi', 'list_kelas', 'list_distribusi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Materi $materi)
     {
-        //
+        $list_buku = Buku::all();
+        return view('materi.ubah', compact('materi', 'list_buku'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
+  
     public function update(Request $request, Materi $materi)
     {
-        //
+        $request->request->add([
+            'slug' => str_slug($request->judul),
+            'user_id' => auth()->user()->id,
+        ]);
+        $materi->update($request->all());
+        return redirect('materii')->with('sukses', 'Data telah diubah');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Materi $materi)
     {
         //hapus file jika ada

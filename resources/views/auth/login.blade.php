@@ -39,7 +39,9 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">E-Learning AEC</h1>
                     @if(session('gagal'))
-                    {{session('gagal')}}
+                    <div class="alert alert-danger" role="alert">
+                      {{session('gagal')}}
+                    </div>
                     @endif
                   </div>
                   <form class="user" action="{{url('/postlogin')}}" method="post">
@@ -55,9 +57,6 @@
                     </button>
                   </form>
                   <hr>
-                  <div class="text-center">
-                    <a class="small" href="{{url('/register')}}">Create an Account!</a>
-                  </div>
                 </div>
               </div>
             </div>

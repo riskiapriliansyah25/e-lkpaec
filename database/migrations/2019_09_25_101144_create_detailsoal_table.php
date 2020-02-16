@@ -14,18 +14,22 @@ class CreateDetailsoalTable extends Migration
     public function up()
     {
         Schema::create('detailsoal', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('soal_id');
-            $table->string('jenis');
-            $table->text('soal');
+            $table->BigIncrements('id');
+            $table->BigInteger('id_soal');
+            $table->string('jenis', 20);
+            $table->longText('soal');
             $table->string('audio', 255)->nullable();
-            $table->text('pila');
-            $table->text('pilb');
-            $table->text('pilc');
-            $table->text('pild');
+            $table->string('gambar', 255)->nullable();
+            $table->longText('pila');
+            $table->longText('pilb');
+            $table->longText('pilc');
+            $table->longText('pild')->nullable();
+            $table->longText('pile')->nullable();
             $table->string('kunci', 1);
-            $table->decimal('score', 5,2);
-            $table->bigInteger('user_id');
+            $table->decimal('score', 5)->nullable();
+            $table->BigInteger('id_user');
+            $table->string('status', 1);
+            $table->string('sesi', 32)->nullable();
             $table->timestamps();
         });
     }

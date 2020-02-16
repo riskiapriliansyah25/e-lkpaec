@@ -12,6 +12,7 @@
 
     <!-- CSS Style -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    @stack('css')
 
     <!-- font -->
     <link href="https://fonts.googleapis.com/css?family=Viga&display=swap" rel="stylesheet">
@@ -35,8 +36,7 @@
                 @else
                 <a class="nav-item nav-link" href="{{url('/')}}">Home</a>
                 @endif
-                <a class="nav-item nav-link" href="#">Tentang</a>
-                <a class="nav-item nav-link" href="{{url('/e-learning')}}">Login</a>
+                <a class="nav-item nav-link" href="{{url('/e-learning/login')}}">Login</a>
                 <a class="nav-item btn btn-primary tombol" href="{{url('/daftar')}}">Daftar</a>
             </div>
         </div>

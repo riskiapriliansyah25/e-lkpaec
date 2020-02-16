@@ -1,11 +1,23 @@
 @extends('layouts.adminmaster') 
 @section('title', $title)
 @section('content')
-<!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+<div class="row">
+  <div class="col-md-7">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+  </div>
+  <div class="col-md-5">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><small><a href="{{url('/admin')}}"><i class="fas fa-home"></i> Home</a></small></li>
+        <li class="breadcrumb-item active" aria-current="page"><small>Daftar Buku</small></li>
+      </ol>
+    </nav>
+  </div>
+</div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary my-1" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary my-1 btn-sm" data-toggle="modal" data-target="#exampleModal">
   <li class="fas fa-fw fa-plus"></li>
 </button>
 <!-- End Button -->
@@ -16,42 +28,40 @@
 </div>
 @endif
 
-<table class="table table-hover" id="dataTable">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nama</th>
-      <th scope="col">Aksi</th>
-    </tr>
-  </thead>
-  <tbody>
-      @foreach($list_buku as $buku)
-    <tr>
-      <th scope="row">{{$loop->iteration}}</th>
-      <td>{{$buku->nama_buku}}</td>
-      <td>
-          <a href="{{url('buku/'.$buku->id.'/edit')}}" class="btn btn-warning btn-sm">Edit</a>
-          <form action="{{url('/buku/'.$buku->id)}}" method="post" class="d-inline">
-              @method('delete')
-              @csrf
-              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-
-      </td>
-    </tr>
-    @endforeach
-  </tbody>
-</table>
-<hr>
 <div class="row">
-  <div class="col-md-3">
-    <h4>Jumlah Buku: {{$jumlah_buku}}</h4>
-  </div>
-  <div class="col-md-9">
-    <div class="float-right">{{$list_buku->links()}}</div>
+  <div class="col-md-10">
+    <div class="card border-left-info">
+      <div class="card-body">
+        <table class="table table-hover" id="dataTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+              @foreach($list_buku as $buku)
+            <tr>
+              <th scope="row">{{$loop->iteration}}</th>
+              <td>{{$buku->nama_buku}}</td>
+              <td>
+                  <a href="{{url('buku/'.$buku->id.'/edit')}}" class="btn btn-warning btn-sm">Edit</a>
+                  <form action="{{url('/buku/'.$buku->id)}}" method="post" class="d-inline">
+                      @method('delete')
+                      @csrf
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+        
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-<hr>
 
 
 <!-- Modal -->
@@ -68,12 +78,9 @@
         <form action="{{url ('/buku')}}" method="post">
         @csrf
             <div class="form-group">
-                <label for="buku_id">Buku ID</label>
-                <input type="text" name="buku_id" id="buku_id" class="form-control">
-            </div>
-            <div class="form-group">
                 <label for="nama_buku">Nama buku</label>
-                <input type="text" name="nama_buku" id="nama_buku" class="form-control">
+                <input type="text" name="nama_buku" id="nama_buku" class="form-control @error('nama_buku') is-invalid @enderror">
+                @error('nama_buku') <div class="invalid-feedback"> {{$message}}</div> @enderror
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Simpan</button>

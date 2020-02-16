@@ -15,9 +15,19 @@ class UsersSeeder extends Seeder
         User::create([
             'role' => 'admin',
             'name' => 'Admin',
+            'email' => null,
             'avatar' => null,
             'username' => 'admin',
             'password' => bcrypt('rahasia'),
+            'remember_token' => str_random(60),
+        ]);
+        User::create([
+            'role' => 'pimpinan',
+            'name' => 'Pimpinan',
+            'email' => null,
+            'avatar' => null,
+            'username' => 'pimpinan',
+            'password' => bcrypt('lkpaec123'),
             'remember_token' => str_random(60),
         ]);
     }

@@ -1,13 +1,30 @@
 @extends('layouts.adminmaster') 
 @section('title', $title)
 @section('content')
-<!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+<div class="row">
+  <div class="col-md-7">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+  </div>
+  <div class="col-md-5">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><small><a href="{{url('/admin')}}"><i class="fas fa-home"></i> Home</a></small></li>
+        <li class="breadcrumb-item active" aria-current="page"><small>Daftar Siswa</small></li>
+      </ol>
+    </nav>
+  </div>
+</div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary my-1" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary my-1 btn-sm" data-toggle="modal" data-target="#exampleModal">
   <li class="fas fa-fw fa-plus"></li>
 </button>
+<!-- End Button -->
+<!-- Button trigger modal -->
+<a href="{{url('/siswa/exportpdf')}}" class="btn btn-success btn-sm">
+ PDF
+</a>
 <!-- End Button -->
 
 @if(session('sukses'))
@@ -16,52 +33,53 @@
 </div>
 @endif
 <hr>
-<table class="table table-hover" id="dataTable">
-  <thead>
-    <tr>
-      <th scope="col">NIS</th>
-      <th scope="col">Nama</th>
-      <th scope="col">No HP</th>
-      <th scope="col">Kelas</th>
-      <th scope="col">Status</th>
-      <th scope="col">Aksi</th>
-    </tr>
-  </thead>
-  <tbody>
-      @foreach($list_siswa as $siswa)
-    <tr>
-      <th scope="row">{{$siswa->nis}}</th>
-      <td><a href="{{url('/siswa/'.$siswa->id)}}">{{$siswa->nama}}</a></td>
-      <td>{{$siswa->no_hp}}</td>
-      <td>{{$siswa->coba->nama_kelas}}</td>
-      <td>
-        @if($siswa->status == 1)
-        <span class="badge badge-primary">Aktif</span> 
-        @else
-        <span class="badge badge-danger">Tidak Aktif</span> 
-        @endif
-      </td>
-      <td>
-          <a href="{{url('/siswa/'.$siswa->id.'/edit')}}" class="btn btn-warning btn-sm">Edit</a>
-          <form action="{{url('/siswa/'.$siswa->id)}}" method="post" class="d-inline">
-              @method('delete')
-              @csrf
-              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-      </td>
-    </tr>
-    @endforeach
-  </tbody>
-</table>
-<hr>
-<div class="row">
-  <div class="col-md-3">
-    <h4>Jumlah Siswa: {{$jumlah_siswa}}</h4>
-  </div>
-  <div class="col-md-9">
+<div class="card border-left-info">
+  <div class="card-body">
+    <table class="table table-hover" id="dataTable">
+      <thead>
+        <tr>
+          <th scope="col">NIS</th>
+          <th scope="col">Nama</th>
+          <th scope="col">No HP</th>
+          <th scope="col">Kelas</th>
+          <th scope="col">Status</th>
+          <th scope="col">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach($list_siswa as $siswa)
+        <tr>
+          <th scope="row">{{$siswa->nis}}</th>
+          <td><a href="{{url('/siswa/'.$siswa->id)}}">{{$siswa->nama}}</a></td>
+          <td>{{$siswa->no_hp}}</td>
+          @if($siswa->kelas_id == null)
+          <td><span class="badge badge-danger">Belum ada kelas</span></td>
+          @else
+          <td>{{$siswa->coba->nama_kelas}}</td>
+          @endif
+          <td>
+            @if($siswa->status == 1)
+            <span class="badge badge-primary">Aktif</span> 
+            @else
+            <span class="badge badge-danger">Tidak Aktif</span> 
+            @endif
+          </td>
+          <td>
+              <a href="{{url('/siswa/'.$siswa->id.'/edit')}}" class="btn btn-warning btn-sm">Edit</a>
+              <form action="{{url('/siswa/'.$siswa->id)}}" method="post" class="d-inline">
+                  @method('delete')
+                  @csrf
+                  <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+              </form>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
   </div>
 </div>
 <hr>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

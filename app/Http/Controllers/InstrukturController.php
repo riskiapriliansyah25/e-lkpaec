@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Storage;
 use App\Instruktur;
 use App\Coba;
 use App\User;
 use App\Auth;
 use App\Siswa;
+use PDF;
 use Illuminate\Http\Request;
 
 class InstrukturController extends Controller
@@ -22,8 +23,15 @@ class InstrukturController extends Controller
         $jumlah_instruktur = Instruktur::count();
         $list_instruktur = Instruktur::all();
         $no_urut_akhir = Instruktur::max('nii');
+        $no_terakhir = $no_urut_akhir + 1;
         $nii = $no_urut_akhir + 1;
+        //$nii = "2000".$no_terakhir;
         return view('instruktur.index', compact('title', 'list_instruktur', 'jumlah_instruktur', 'nii'));
+    }
+    public function laporan()
+    {
+        $list_instruktur = Instruktur::all();
+        return view('instruktur.laporan', compact('list_instruktur'));
     }
     public function kelas()
     {
@@ -67,13 +75,23 @@ class InstrukturController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'nama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'jabatan' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'no_hp' => 'required|numeric',
+            'jenis_kelamin' => 'required',
+            'tgl_mulai_bertugas' => 'required',
+            'foto' => 'sometimes',
+        ]);
+
         $user = new User;
         $user->role = 'instruktur';
         $user->name = $request->nama;
-        $user->avatar = null;
         $user->username = $request->nii;
-        $user->password = bcrypt('rahasia');
+        $user->password = bcrypt('secret');
         $user->remember_token = str_random(60);
         $user->save();
 
@@ -119,7 +137,30 @@ class InstrukturController extends Controller
      */
     public function update(Request $request, Instruktur $instruktur)
     {
-        $instruktur->update($request->all());
+        $input  = $request->all();
+
+        $request->validate([
+            'foto' => 'image|mimes:jpeg,jpg,png',
+        ]);
+        
+        //Avatar. Cek adakah foto?
+        if($request->hasFile('foto')){
+            //Hapus Foto lama jika ada foto baru.
+            $exist = Storage::disk('foto_instruktur')->exists($instruktur->foto);
+            if(isset($instruktur->foto) && $exist){
+                $delete = Storage::disk('foto_instruktur')->delete($instruktur->foto);
+            }
+            //upload foto baru.
+            $foto = $request->file('foto');
+            $ext = $foto->getClientOriginalExtension();
+            if($request->file('foto')->isValid()){
+                $foto_name = date('YmdHis'). ".$ext";
+                $upload_path = "img/instruktur";
+                $request->file('foto')->move($upload_path, $foto_name);
+                $input['foto'] = $foto_name;
+            }
+        }
+        $instruktur->update($input);
         return redirect('instruktur')->with('sukses', 'Data Berhasil Diperbarui');
     }
 
@@ -132,7 +173,24 @@ class InstrukturController extends Controller
     public function destroy(Instruktur $instruktur)
     {
         User::destroy($instruktur->user_id);
+        //Hapus Foto Kalau Ada
+        $exist =Storage::disk('foto_instruktur')->exists($instruktur->foto);
+        if(isset($instruktur->foto) && $exist){
+            $delete = Storage::disk('foto_instruktur')->delete($instruktur->foto);
+        }
         Instruktur::destroy($instruktur->id);
         return redirect('instruktur')->with('sukses', 'Data Berhasil Dihapus');
+    }
+    public function exportPdf()
+    {
+        $tahun = date('YmdHis');
+        $list_instruktur = Instruktur::all();
+        $pdf = PDF::loadview('export.instrukturpdf', compact('list_instruktur'));
+        return $pdf->download($tahun.'_daftar_instruktur.pdf');
+    }
+    public function exportPdfinstruktur(Instruktur $instruktur)
+    {
+        $pdf = PDF::loadview('export.getinstrukturpdf', compact('instruktur'));
+        return $pdf->download($instruktur->nii.$instruktur->nama.'_instruktur.pdf');
     }
 }

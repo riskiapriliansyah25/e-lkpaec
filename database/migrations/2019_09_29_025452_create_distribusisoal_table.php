@@ -15,9 +15,9 @@ class CreateDistribusisoalTable extends Migration
     {
         Schema::create('distribusisoal', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('soal_id');
-            $table->bigInteger('kelas_id')->nullable();
-            $table->bigInteger('siswa_id')->nullable();
+            $table->bigInteger('id_soal');
+            $table->bigInteger('id_siswa');
+            $table->bigInteger('id_user');
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateMateriTable extends Migration
             $table->integer('buku_id');
             $table->string('materi', 255)->nullable();
             $table->text('deskripsi');
-            $table->integer('user_id', 20);
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

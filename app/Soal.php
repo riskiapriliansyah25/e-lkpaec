@@ -9,21 +9,20 @@ class Soal extends Model
     protected $table = 'soal';
     protected $guarded = [''];
 
-    public function Materi()
-    {
-        return $this->belongsTo('App\Materi', 'materi_id');
-    }
     public function Buku()
     {
         return $this->belongsTo('App\Buku', 'buku_id');
     }
-    public function User()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\User', 'id_user');
     }
-    public function Detailsoal()
+    public function jawab()
     {
-        return $this->hasMany('App\Detailsoal', 'soal_id');
+        return $this->belongsTo('App\Jawab', 'id_soal');
     }
-
+    public function detailSoal()
+    {
+        return $this->hasMany('App\Detailsoal', 'id_soal');
+    }
 }

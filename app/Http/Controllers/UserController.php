@@ -45,14 +45,26 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        User::create([
-            'role' => $request->role,
-            'name' => $request->name,
-            'avatar' => null,
-            'email' => $request->email,
-            'username' => $request->username,
-            'password' => bcrypt('rahasia'),
+        $request->validate([
+            'nama' => 'required',
+            'username' => 'required',
+            'role' => 'required',
         ]);
+        $user = new User;
+        $user->role = $request->role;
+        $user->name = $request->name;
+        $user->avatar = null;
+        $user->username = $request->username;
+        if($user->role == 'siswa'){
+            $user->password = bcrypt('123456');
+        }else if($user->role == 'instruktur'){
+            $user->password = bcrypt('secret');
+        }else{
+            $user->password= bcrypt('rahasia');
+        }
+        $user->remember_token = str_random(60);
+        $user->save();
+
         return redirect('user/daftar')->with('sukses', 'User telah ditambah');
     }
     
@@ -84,9 +96,25 @@ class UserController extends Controller
                $user->update([
                    'password' => bcrypt($request->password_1),
                ]);
-               return redirect ('user/daftar');
+               if(auth()->user()->role == 'instruktur'){
+                   return redirect ('user')->with('sukses', 'Password telah diganti');
+               }else{
+                   return redirect ('user/daftar')->with('sukses', 'Password telah diganti');
+               }
             }
          }
         }
+    }
+    public function resetpassword(Request $request, User $user)
+    {
+        $user->update([
+            'password' => bcrypt('123456'),
+        ]);
+        return redirect ('user/'.$user->id.'/profile')->with('sukses', 'Password telah direset');
+    }
+    public function destroy(User $user)
+    {
+        User::destroy($user->id);
+        return redirect ('user/daftar')->with('sukses', 'Data terhapus');
     }
 }

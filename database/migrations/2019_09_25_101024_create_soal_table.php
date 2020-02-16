@@ -15,9 +15,8 @@ class CreateSoalTable extends Migration
     {
         Schema::create('soal', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
+            $table->bigInteger('id_user');
             $table->string('jenis', 20);
-            $table->bigInteger('materi_id')->nullable();
             $table->bigInteger('buku_id')->nullable();
             $table->string('waktu', 32);
             $table->timestamps();

@@ -24,16 +24,38 @@ class AuthController extends Controller
     public function userlogin(Request $request)
     {
         if(Auth::attempt($request->only('username','password'))){
-            return redirect('e-learning/home');
-        }
+            if(auth()->user()->role == 'admin')
+            {
+                return redirect('admin');
+            }else if(auth()->user()->role == 'instruktur'){
+                return redirect('user');
+            }else if(auth()->user()->role == 'pimpinan'){
+                return redirect('pimpinan');
+            }else{
+                return redirect('e-learning');
+            }
+            }else{
+                return redirect('e-learning/login')->with('gagal', 'Username atau password salah');
+            }
+ 
     }
     public function postlogin(Request $request)
    {
        if(Auth::attempt($request->only('username','password'))){
-           return redirect('user');
-       }
-       return redirect('login');
-   }
+           if(auth()->user()->role == 'admin')
+           {
+               return redirect('admin');
+           }else if(auth()->user()->role == 'pimpinan'){
+               return redirect('pimpinan');
+           }else if(auth()->user()->role == 'instruktur'){
+               return redirect('user');
+           }else{
+               return redirect('e-learning');
+           }
+           }
+
+           return redirect('login')->with('gagal', 'Username atau password salah');;
+    }
    public function logout()
    {
        Auth::logout();
@@ -42,7 +64,7 @@ class AuthController extends Controller
    public function _logout()
    {
        Auth::logout();
-       return redirect('e-learning');
+       return redirect('e-learning/login');
    }
     public function register()
     {

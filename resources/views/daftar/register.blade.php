@@ -1,6 +1,7 @@
 @extends('layouts.adminmaster')
 @section('title', $title)
 @section('content')
+<h1 class="h3">Daftar Ulang</h1>
 <form action="{{url ('/pendaftar/'.$daftar->id.'/register')}}" method="post">
         @csrf
             <div class="form-group">
@@ -41,26 +42,6 @@
                     <option value="P" @if($daftar->jenis_kelamin == 'P') selected @endif>Perempuan</option>
                 </select>
                 @error('jenis_kelamin') <div class="invalid-feedback"> {{$message}}</div> @enderror
-            </div>
-            <div class="form-group">
-                <label for="buku_id">Buku</label>
-                <select name="buku_id" id="buku_id" class="form-control @error('buku_id') is-invalid @enderror">
-                <option value="">Pilih..</option>
-                @foreach($list_buku as $buku)
-                    <option value="{{$buku->id}}">{{$buku->nama_buku}}</option>
-                  @endforeach
-                </select>
-                @error('buku_id') <div class="invalid-feedback"> {{$message}}</div> @enderror
-            </div>
-            <div class="form-group">
-                <label for="kelas_id">Kelas</label>
-                <select name="kelas_id" id="kelas_id" class="form-control">
-                    <option value="">Pilih...</option>
-                    @foreach($list_kelas as $kelas)
-                    <option value="{{$kelas->id}}">{{$kelas->nama_kelas}}: {{$kelas->instruktur->nama}}</option>
-                    @endforeach
-                </select>
-                @error('kelas_id') <div class="invalid-feedback"> {{$message}}</div> @enderror
             </div>
             <div class="form-group">
                 <label for="status">Status</label>

@@ -15,9 +15,14 @@ class BukuController extends Controller
     public function index()
     {
         $title = 'Buku';
-        $list_buku = Buku::paginate(5);
+        $list_buku = Buku::all();
         $jumlah_buku = Buku::count();
         return view('buku.index', compact('list_buku', 'title', 'jumlah_buku'));
+    }
+    public function laporan()
+    {
+        $list_buku = Buku::all();
+        return view('buku.laporan', compact('list_buku'));
     }
 
     /**
@@ -38,6 +43,9 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_buku' => 'required',
+        ]);
         Buku::create($request->all());
         return redirect('buku')->with('sukses', 'Data Telah Ditambahkan');
     }
@@ -61,7 +69,7 @@ class BukuController extends Controller
      */
     public function edit(Buku $buku)
     {
-        //
+        return view('buku.edit', compact('buku'));
     }
 
     /**
@@ -73,7 +81,8 @@ class BukuController extends Controller
      */
     public function update(Request $request, Buku $buku)
     {
-        //
+        $buku->update($request->all());
+        return redirect('buku')->with('sukses', 'Data telah diubah');
     }
 
     /**
@@ -84,6 +93,7 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
-        //
+        Buku::destroy($buku->id);
+        return redirect('buku')->with('sukses', 'Data berhasil dihapus');
     }
 }

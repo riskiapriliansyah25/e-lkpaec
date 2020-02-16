@@ -16,11 +16,10 @@ class PaketController extends Controller
     public function index()
     {
         $title = "Paket";
-        $list_paket = Paket::paginate(5);
-        $jumlah_paket = Paket::count();
-        return view('paket.index', compact('title', 'list_paket', 'jumlah_paket'));
+        $list_paket = Paket::all();
+        return view('paket.index', compact('list_paket'));
     }
-    public function cari(Request $request)
+    /* public function cari(Request $request)
     {
         $title = 'Paket';
         $kata_kunci = $request->input('kata_kunci');
@@ -30,7 +29,7 @@ class PaketController extends Controller
         $jumlah_paket = $list_paket->total();
         return view('paket.index', compact('title', 'list_paket', 'kata_kunci', 'pagination', 'jumlah_paket'));
     }
-
+ */
     /**
      * Show the form for creating a new resource.
      *
@@ -49,6 +48,10 @@ class PaketController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_paket' => 'required',
+            'harga' => 'required',
+        ]);
         Paket::create($request->all());
         return redirect('paket')->with('sukses', 'Data telah ditambahkan');
     }
@@ -60,9 +63,8 @@ class PaketController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Paket $paket)
-    {
-        $title = "Details";
-        return view('paket.show', compact('paket', 'title'));
+    { 
+        return view('paket.show', compact('paket'));
     }
 
     /**
@@ -73,8 +75,7 @@ class PaketController extends Controller
      */
     public function edit(Paket $paket)
     {
-        $title = 'Edit Paket';
-        return view('paket.edit', compact('paket', 'title'));
+        return view('paket.edit', compact('paket'));
     }
 
     /**

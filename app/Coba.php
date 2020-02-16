@@ -17,4 +17,8 @@ class Coba extends Model
     {
        return $this->hasMany('App\Siswa', 'kelas_id');
     }
+    public function distribusisoallatihan()
+    {
+        return $this->belongsTo('App\MDistribusisoallatihan', 'id_kelas', 'id');
+    }
 }

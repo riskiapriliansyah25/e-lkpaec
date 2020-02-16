@@ -44,9 +44,12 @@
     <div class="row justify-content-center tinggi-card">
         <div class="col-md-8">
             @if(session('sukses'))
-                <div class="alert alert-success" role="alert">
-                 {{session('sukses')}}
-                </div>
+            <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Well done!</h4>
+            <p>{{session('sukses')}}</p>
+            <hr>
+            <p class="mb-0">Kunjungi kami di Jalan Awang Long Senopati RT.01 NO.19 Kel-Sukarame Kec-Tenggarong Kaltim 75515 Telp. 0541-661781</p>
+            </div>
             @endif
             <div class="card">
                 <div class="card-header">
@@ -57,31 +60,42 @@
                         @csrf
                         <div class="form-group">
                             <label for="nama">Nama Lengkap</label>
-                            <input type="text" name="nama" id="nama" class="form-control">
+                            <input type="text" name="nama" id="nama" class="form-control @error('nama') is-invalid @enderror" value="{{old('nama')}}">
+                             @error('nama') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <label for="tempat_lahir">Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control">
+                            <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror" value="{{old('tempat_lahir')}}">
+                             @error('tempat_lahir') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control">
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror" value="{{old('tanggal_lahir')}}">
+                             @error('tanggal_lahir') <div class="invalid-feedback"> {{$message}}</div> @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{old('email')}}">
+                             @error('email') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <label for="alamat">Alamat</label>
-                            <input type="text" name="alamat" class="form-control">
+                            <input type="text" name="alamat" class="form-control @error('alamat') is-invalid @enderror" value="{{old('alamat')}}">
+                             @error('alamat') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <label for="no_hp">No HP</label>
-                            <input type="text" name="no_hp" class="form-control">
+                            <input type="text" name="no_hp" class="form-control @error('no_hp') is-invalid @enderror" value="{{old('no_hp')}}">
+                             @error('no_hp') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <label for="jenis_kelamin">Jenis Kelamin</label>
-                            <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                            <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
                                 <option value="">Pilih..</option>
                                 <option value="L">Laki-Laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
+                            @error('jenis_kelamin') <div class="invalid-feedback"> {{$message}}</div> @enderror
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary float-right">Daftar</button>

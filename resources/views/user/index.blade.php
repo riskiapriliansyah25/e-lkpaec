@@ -3,16 +3,23 @@
 @section('content')
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+
+@if(session('sukses'))
+<div class="alert alert-success" role="alert">
+  {{session('sukses')}}
+</div>
+@endif
+
 <div class="card mb-3 col-lg-8" style="max-width: 540px;">
                   <div class="row no-gutters">
                     <div class="col-md-4">
                       <img class="card-img" src="
                       @if(auth()->user()->role == 'admin')
-                      {{asset('img/user/'.auth()->user()->avatar)}}
+                      {{asset('img/user/dummymale.jpg')}}
                       @endif
-                      @if(auth()->user()->role == 'instruktur')
-                      @if(isset(auth()->user->instruktur->avatar))
-                      {{asset('img/instruktur/'.auth()->user()->instruktur->avatar)}}
+                      @if(Auth::user()->role == 'instruktur')
+                      @if(isset(Auth::user()->instruktur->foto))
+                      {{asset('img/instruktur/'.Auth::user()->instruktur->foto)}}
                       @else
                         @if(auth()->user()->instruktur->jenis_kelamin == 'L')
                           {{asset('img/instruktur/dummymale.jpg')}}
@@ -40,21 +47,22 @@
                           @if(auth()->user()->role == "admin")
                           {{auth()->user()->name}}
                           @endif
-                          @if(auth()->user()->role == "siswa")
-                          {{auth()->user()->siswa->nama}}
-                          @endif
                           @if(auth()->user()->role == "instruktur")
                           {{auth()->user()->instruktur->nama}}
                           @endif
                         </h5>
+                        @if(auth()->user()->role == "instruktur")
                         <h5 class="card-title">
-                        @if(auth()->user()->role == "siswa")
-                          {{auth()->user()->siswa->nis}}
-                          @endif
-                          @if(auth()->user()->role == "instruktur")
                           {{auth()->user()->instruktur->nii}}
-                          @endif
                         </h5>                      
+                        <h5 class="card-title">
+                          {{auth()->user()->instruktur->tempat_lahir}}, {{auth()->user()->instruktur->tanggal_lahir}}
+                        </h5>                      
+                        <h5 class="card-title">
+                          {{auth()->user()->instruktur->jabatan}}
+                        </h5> 
+                        <a href="{{url('/user/'.Auth::user()->id.'/changepassword')}}" class="btn btn-warning float-right">Ganti password</a>       
+                        @endif
                       </div>
                     </div>
                   </div>

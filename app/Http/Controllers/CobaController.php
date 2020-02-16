@@ -19,7 +19,7 @@ class CobaController extends Controller
         $title = "Kelas";
         $list_kelas = Coba::paginate(5);
         $list_instruktur = Instruktur::all();
-        return view('coba.index', compact('title', 'list_instruktur', 'list_kelas', 'list_siswa'));
+        return view('coba.index', compact('title', 'list_instruktur', 'list_kelas'));
     }
 
     /**
@@ -40,6 +40,10 @@ class CobaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_kelas' => 'required',
+            'instruktur_id' => 'required',
+        ]);
         Coba::create($request->all());
         return redirect('coba')->with('sukses', 'Data telah ditambah');
     }
@@ -67,7 +71,8 @@ class CobaController extends Controller
      */
     public function edit(Coba $coba)
     {
-        //
+        $list_instruktur = Instruktur::all();
+        return view('coba.edit', compact('coba', 'list_instruktur'));
     }
 
     /**
@@ -79,7 +84,8 @@ class CobaController extends Controller
      */
     public function update(Request $request, Coba $coba)
     {
-        //
+        $coba->update($request->all());
+        return redirect('coba');
     }
 
     /**
@@ -90,6 +96,7 @@ class CobaController extends Controller
      */
     public function destroy(Coba $coba)
     {
-        //
+        Coba::destroy($coba->id);
+        return  redirect('coba')->with('sukses', 'Data telah dihapus');
     }
 }

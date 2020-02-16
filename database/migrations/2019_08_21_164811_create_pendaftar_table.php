@@ -18,10 +18,11 @@ class CreatePendaftarTable extends Migration
             $table->string('nama');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
+            $table->string('email');
             $table->string('alamat');
             $table->char('no_hp',15);
             $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->integer('status', 1);
+            $table->string('status', 1);
             $table->timestamps();
         });
     }

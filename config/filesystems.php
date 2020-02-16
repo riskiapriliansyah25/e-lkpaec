@@ -50,9 +50,21 @@ return [
             'driver' => 'local',
             'root' => public_path('img/siswa'),
         ],
+        'foto_instruktur' => [
+            'driver' => 'local',
+            'root' => public_path('img/instruktur'),
+        ],
         'materi' => [
             'driver' => 'local',
             'root' => public_path('materi'),
+        ],
+        'audio' => [
+            'driver' => 'local',
+            'root' => public_path('kumpulansoal/audio'),
+        ],
+        'gambar' => [
+            'driver' => 'local',
+            'root' => public_path('kumpulansoal/gambar'),
         ],
 
         'local' => [

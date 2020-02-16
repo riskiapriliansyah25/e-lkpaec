@@ -25,7 +25,7 @@ class CreateInstrukturTable extends Migration
             $table->char('no_hp', 15);
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->date('tgl_mulai_bertugas');
-            $table->string('foto', 255);
+            $table->string('foto', 255)->nullable();
             $table->timestamps();
         });
     }

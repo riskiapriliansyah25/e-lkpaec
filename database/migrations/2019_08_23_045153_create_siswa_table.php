@@ -15,7 +15,7 @@ class CreateSiswaTable extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id', 20);
+            $table->bigInteger('user_id');
             $table->char('nis', 10)->unique();
             $table->string('nama');
             $table->string('tempat_lahir');
@@ -23,10 +23,10 @@ class CreateSiswaTable extends Migration
             $table->string('alamat');
             $table->char('no_hp',15);
             $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->integer('buku_id', 10);
-            $table->integer('kelas_id', 10);
-            $table->integer('status', 1);
-            $table->string('foto', 255);
+            $table->bigInteger('buku_id')->nullable();
+            $table->bigInteger('kelas_id')->nullable();
+            $table->string('status', 1);
+            $table->string('foto', 255)->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,11 @@
                     <div class="card-body">
                             <h1 class="h4 text-gray-900 mb-4">Login</h1>
                         <hr>
+                        @if(session('gagal'))
+                        <div class="alert alert-danger" role="alert">
+                        {{session('gagal')}}
+                        </div>
+                        @endif
                         <form action="{{url('/userlogin')}}" method="post" class="user">
                         @csrf
                             <div class="form-group">

@@ -14,15 +14,16 @@ class CreateJawabTable extends Migration
     public function up()
     {
         Schema::create('jawab', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('no_soal_id');
-            $table->bigInteger('soal_id');
-            $table->bigInteger('user_id');
-            $table->bigInteger('kelas_id');
-            $table->string('nama');
+            $table->BigIncrements('id');
+            $table->string('no_soal_id', 15);
+            $table->Biginteger('id_soal');
+            $table->BigInteger('id_user');
+            $table->BigInteger('id_kelas')->nullable();
+            $table->string('nama', 255)->nullable();
             $table->string('pilihan', 1);
-            $table->decimal('score', 8,2);
+            $table->decimal('score');
             $table->string('status', 1);
+            $table->integer('revisi')->nullable();
             $table->timestamps();
         });
     }

@@ -1,7 +1,23 @@
 @extends('layouts.adminmaster')
 @section('title', $title)
 @section('content')
-<h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+<!-- Page Heading -->
+<div class="row">
+  <div class="col-md-7">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+  </div>
+  <div class="col-md-5">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><small><a href="{{url('/admin')}}"><i class="fas fa-home"></i> Home</a></small></li>
+        <li class="breadcrumb-item active"><small><a href="{{url('/siswa')}}">Daftar Siswa</a></small></li>
+        <li class="breadcrumb-item active" aria-current="page"><small>Edit Siswa</small></li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
 <form action="{{url('/siswa/'.$siswa->id)}}" method="post" enctype="multipart/form-data">
 @method('patch')
 @csrf
@@ -22,6 +38,7 @@
         <div class="col-sm-6">
             <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir" value="{{$siswa->tempat_lahir}}">
         </div>
+        @error('tempat_lahir') <div class="invalid-feedback"> {{$message}}</div> @enderror
     </div>
     <div class="form-group row">
         <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
